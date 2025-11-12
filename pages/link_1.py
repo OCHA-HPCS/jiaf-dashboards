@@ -5,8 +5,11 @@ from figures import make_choropleth
 
 st.subheader("Which areas have both high PiN and high Severity?", divider="violet")
 with st.container(border=1):
-    pin_threshold = st.slider("PiN threshold", 0, 100, 70)
-    sev_threshold = st.slider("Severity threshold", 0, 5, 3)
+    c1, c2 = st.columns(2)
+    with c1:
+        pin_threshold = st.slider("PiN threshold", 0, 100, 70)
+    with c2:
+        sev_threshold = st.slider("Severity threshold", 0, 5, 3)
 
 # Dataframe with areas -> "Both" if PiN and Severity exceed thresholds, "PiN Only" if only PiN exceeds, "Severity Only" if only Severity exceeds, else "None"
 overlap_df = df[["Admin 2", "Admin 2 P-Code", "Final PiN", "Severity"]].copy()
