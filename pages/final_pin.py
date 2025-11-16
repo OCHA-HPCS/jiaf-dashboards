@@ -1,7 +1,9 @@
 import streamlit as st
 
-from data import df
+from data import load_df
 from figures import make_choropleth
+
+df = load_df()
 
 st.subheader("Where is the highest concentration of population in need in the country?", divider="rainbow")
 col1, col2 = st.columns(2)

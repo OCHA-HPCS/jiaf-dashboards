@@ -1,8 +1,10 @@
 import seaborn as sns
 import streamlit as st
 
-from data import df
+from data import load_df
 from figures import make_choropleth
+
+df = load_df()
 
 cm = sns.light_palette("green", as_cmap=True)
 

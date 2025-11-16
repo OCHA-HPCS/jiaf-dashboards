@@ -1,7 +1,9 @@
 import streamlit as st
 
-from data import hist_df, sectors
+from data import load_hist, sectors
 from figures import make_choropleth
+
+hist_df = load_hist()
 
 st.subheader("What is the PiN trend as compared to the previous year?", divider="green")
 

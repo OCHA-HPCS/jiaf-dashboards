@@ -1,7 +1,9 @@
 import plotly.express as px
 import streamlit as st
 
-from data import sev_df, sectors
+from data import load_sev, sectors
+
+sev_df = load_sev()
 
 st.subheader("Which sectors have the highest severity?", divider="blue")
 

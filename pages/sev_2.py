@@ -1,7 +1,9 @@
 import streamlit as st
 
-from data import sectors, sev_df
+from data import sectors, load_sev
 from figures import make_choropleth
+
+sev_df = load_sev()
 
 st.subheader("Which areas have a large number of sectors with high severity of needs?", divider="blue")
 with st.container(border=1):
@@ -10,6 +12,7 @@ with st.container(border=1):
 col1, col2 = st.columns(2)
 with col1:
     sev_df["Sectors above severity threshold"] = sev_df[sectors].gt(threshold).sum(axis=1)
+    sev_df = sev_df[sev_df["Sectors above severity threshold"] > 0]
     st.markdown("**:blue-background[Number of sectors above severity threshold]**")
     fig = make_choropleth(sev_df, "Sectors above severity threshold"
                           , "Sectors",

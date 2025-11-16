@@ -1,7 +1,9 @@
 import streamlit as st
 
-from data import sev_df, sectors
+from data import load_sev, sectors
 from figures import make_choropleth
+
+sev_df = load_sev()
 
 st.subheader("Which sectors have the highest severity?", divider="blue")
 columns = st.columns(3, gap=None)

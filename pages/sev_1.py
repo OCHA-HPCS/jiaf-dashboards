@@ -1,7 +1,9 @@
 import streamlit as st
 
-from data import df
+from data import load_df
 from figures import make_choropleth
+
+df = load_df()
 
 st.subheader("Where are the areas with the highest severity?", divider="blue")
 

@@ -1,7 +1,9 @@
 import streamlit as st
 
-from data import df
+from data import load_df
 from figures import make_choropleth
+
+df = load_df()
 
 st.subheader("Which areas have both high PiN and high Severity?", divider="violet")
 with st.container(border=1):

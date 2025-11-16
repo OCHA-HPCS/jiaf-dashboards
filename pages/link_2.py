@@ -1,6 +1,8 @@
 import streamlit as st
 
-from data import df, sectors
+from data import load_df, sectors
+
+df = load_df()
 
 st.subheader("To what extent do sectoral PiNs cross-correlate?", divider="violet")
 

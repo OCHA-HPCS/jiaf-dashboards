@@ -4,12 +4,20 @@ from urllib.request import urlopen
 import geopandas as gpd
 import numpy as np
 import plotly.express as px
+import streamlit as st
 from pandas import DataFrame
 
 MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiY3lydXMtcGVsbGV0IiwiYSI6ImNtaGttcjE2dzFpNzEyanNoejA2d2UycnMifQ.8pSHcMqcZiNnzY8w2mAg9A"
 COD_URI = "https://itos-humanitarian.s3.amazonaws.com/MOZ/COD_MOZ_Admin2.geojson"
-with urlopen(COD_URI) as response:
-    cods = json.load(response)
+
+
+@st.cache_data(ttl=86400)
+def load_cods():
+    with urlopen(COD_URI) as response:
+        return json.load(response)
+
+
+cods = load_cods()
 
 
 def auto_center_zoom(geojson, codes):

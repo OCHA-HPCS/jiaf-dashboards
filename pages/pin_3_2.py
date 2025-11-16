@@ -1,7 +1,9 @@
 import plotly.express as px
 import streamlit as st
 
-from data import df, sectors
+from data import load_df, sectors
+
+df = load_df()
 
 st.subheader("Which sectors have the highest PiN?", divider="green")
 
