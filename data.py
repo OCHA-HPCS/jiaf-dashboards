@@ -11,6 +11,7 @@ def load_df():
     df.columns = df.iloc[1]
     df.drop([0, 1], inplace=True)
     df["Final PiN"] = pd.to_numeric(df["Final PiN"], errors='coerce', downcast="integer")
+    df["% PiN"] = df["Final PiN"] / df["Population"]
     for sector in sectors:
         df[sector] = pd.to_numeric(df[sector], errors='coerce')
     return df

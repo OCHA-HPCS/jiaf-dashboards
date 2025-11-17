@@ -2,6 +2,7 @@ import plotly.express as px
 import streamlit as st
 
 from data import load_sev, sectors
+from figures import SEV_DM
 
 sev_df = load_sev()
 
@@ -9,14 +10,22 @@ st.subheader("Which sectors have the highest severity?", divider="blue")
 
 sector_sev_df = sev_df[sectors].melt(var_name="Sector", value_name="Severity")
 sector_sev_counts = sector_sev_df.groupby(["Sector", "Severity"]).size().reset_index(name="Count")
-sector_sev_counts = sector_sev_counts[sector_sev_counts["Severity"] > 0]
+# sector_sev_counts = sector_sev_counts[sector_sev_counts["Severity"] > 0]
+sector_sev_counts['Prop'] = sector_sev_counts.groupby('Sector')['Count'].transform(lambda x: x / x.sum())
+sector_sev_counts["Severity"] = sector_sev_counts["Severity"].astype(int).astype(str)
 
 col1, col2 = st.columns(2)
 with col1:
-    st.markdown("**:blue-background[Number of areas by sector and severity level]**")
-    fig = px.bar(sector_sev_counts, x='Sector', y='Count', color='Severity',
-                 color_continuous_scale='Blues')
-    fig.update_layout(xaxis_title='Sector', yaxis_title='Number of Areas', margin=dict(t=30, l=0, r=0, b=0))
+    st.markdown("**:blue-background[Proportion of areas by sector and severity level]**")
+    cm = SEV_DM
+    cm.update(
+        {'0': 'lightgrey'}
+    )
+    fig = px.bar(sector_sev_counts, x='Sector', y='Prop', color='Severity',
+                 color_continuous_scale='Blues', color_discrete_map=cm, category_orders={
+            'Severity': ['0', '1', '2', '3', '4', '5']
+        }, barmode='relative')
+    fig.update_layout(xaxis_title='Sector', yaxis_title='Proportion of Areas', margin=dict(t=0, l=0, r=0, b=0))
     st.plotly_chart(fig)
 with col2:
     # dataframe with admin 1, admin 2, names of sectors at phase 5 and names of sectors at phase 4
