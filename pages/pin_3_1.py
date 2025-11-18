@@ -10,5 +10,5 @@ columns = st.columns(3, gap=None)
 for i, sector in enumerate(sectors):
     with columns[i % 3]:
         st.markdown(f"**:green-background[{sector}] PiN by admin area**")
-        fig = make_choropleth(df, sector, "PiN", "Greens")
+        fig = make_choropleth(df, sector, "PiN", "Greens", continuous=True)
         st.plotly_chart(fig, width="stretch")

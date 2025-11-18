@@ -158,23 +158,76 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
             oo_df = df_module[~df_module.index.str.contains("Workspace")]
             df_module.drop(oo_df.index, inplace=True)
             st.markdown(f"#### Outcome Indicator")
-            fig = px.bar(oo_df, y="label", x=["yes", "no", "rmi"], orientation="h", color_discrete_map={
-                "yes": "green",
-                "no": "red",
-                "rmi": "orange"}, labels={"label": "Question", "value": "Count", "variable": "Response"})
-            fig.update_layout(xaxis={
-                "tickvals": list(range(0, int(oo_df[["yes", "no", "rmi"]].sum().max()) + 1))},
-                margin=dict(t=0, l=0, r=0, b=0), height=140)
-            st.plotly_chart(fig, width="stretch")
+            x_arr = ["yes", "no", "rmi"]
+            available_cols = [c for c in x_arr if c in oo_df.columns]
+            if available_cols:
+                oo_long = (
+                    oo_df.reset_index()[["label"] + available_cols]
+                    .melt(
+                        id_vars="label",
+                        value_vars=available_cols,
+                        var_name="Response",
+                        value_name="Count"
+                    )
+                )
+                fig = px.bar(
+                    oo_long,
+                    y="label",
+                    x="Count",
+                    color="Response",
+                    orientation="h",
+                    color_discrete_map={
+                        "yes": "green",
+                        "no": "red",
+                        "rmi": "orange"
+                    },
+                    labels={"label": "Question", "Count": "Count", "Response": "Response"}
+                )
+                fig.update_layout(
+                    xaxis={"tickvals": list(range(0, int(oo_long["Count"].max()) + 1))},
+                    margin=dict(t=0, l=0, r=0, b=0),
+                    height=140,
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("No valid response columns (yes/no/rmi) found for this module.")
             st.markdown(f"#### Questions")
-            fig = px.bar(df_module, y="label", x=["yes", "no", "rmi"], orientation="h", color_discrete_map={
-                "yes": "green",
-                "no": "red",
-                "rmi": "orange"}, labels={"label": "Question", "value": "Count", "variable": "Response"})
-            fig.update_layout(xaxis={
-                "tickvals": list(range(0, int(df_module[["yes", "no", "rmi"]].sum().max()) + 1))},
-                margin=dict(t=0, l=0, r=0, b=0))
-            st.plotly_chart(fig, width="stretch")
+            x_arr = ["yes", "no", "rmi"]
+            available_cols = [c for c in x_arr if c in df_module.columns]
+            if available_cols:
+                df_module_long = (
+                    df_module.reset_index()[["label"] + available_cols]
+                    .melt(
+                        id_vars="label",
+                        value_vars=available_cols,
+                        var_name="Response",
+                        value_name="Count"
+                    )
+                )
+                fig = px.bar(
+                    df_module_long,
+                    y="label",
+                    x="Count",
+                    color="Response",
+                    orientation="h",
+                    color_discrete_map={
+                        "yes": "green",
+                        "no": "red",
+                        "rmi": "orange"
+                    },
+                    labels={"label": "Question", "Count": "Count", "Response": "Response"}
+                )
+                fig.update_layout(
+                    xaxis={
+                        "tickvals": list(
+                            range(0, int(df_module_long["Count"].max()) + 1)
+                        )
+                    },
+                    margin=dict(t=0, l=0, r=0, b=0)
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("No valid response columns (yes/no/rmi) found for this module.")
             st.markdown("#### Justifications")
             st.dataframe(df_justif)
     elif i == 3:
@@ -187,14 +240,38 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
             df_areas["label"] = df_areas.index.map(
                 lambda x: form_df.at[x, "label"] if x in form_df.index else x
             )
-            fig = px.bar(df_areas, y="label", x=["yes", "no", "rmi"], orientation="h", color_discrete_map={
-                "yes": "green",
-                "no": "red",
-                "rmi": "orange"}, labels={"label": "Area", "value": "Count", "variable": "Response"})
-            fig.update_layout(xaxis={
-                "tickvals": list(range(0, int(df_areas[["yes", "no", "rmi"]].sum().max()) + 1))},
-                margin=dict(t=0, l=0, r=0, b=0))
-            st.plotly_chart(fig, width="stretch")
+            x_arr = ["yes", "no", "rmi"]
+            available_cols = [c for c in x_arr if c in df_areas.columns]
+            if available_cols:
+                df_areas_long = (
+                    df_areas.reset_index()[["label"] + available_cols]
+                    .melt(
+                        id_vars="label",
+                        value_vars=available_cols,
+                        var_name="Response",
+                        value_name="Count"
+                    )
+                )
+                fig = px.bar(
+                    df_areas_long,
+                    y="label",
+                    x="Count",
+                    color="Response",
+                    orientation="h",
+                    color_discrete_map={
+                        "yes": "green",
+                        "no": "red",
+                        "rmi": "orange"
+                    },
+                    labels={"label": "Area", "Count": "Count", "Response": "Response"}
+                )
+                fig.update_layout(
+                    xaxis={"tickvals": list(range(0, int(df_areas_long["Count"].max()) + 1))},
+                    margin=dict(t=0, l=0, r=0, b=0),
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("No valid response columns (yes/no/rmi) found for Areas.")
             areas_justif_cols = [col for col in df.columns if col.startswith("areas") and "Justif" in col]
             df_areas_justif = df[areas_justif_cols]
             st.markdown("#### Areas Justifications")
