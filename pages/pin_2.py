@@ -1,14 +1,16 @@
 import seaborn as sns
 import streamlit as st
 
-from data import df, sectors
+from data import load_df, sectors
 from figures import make_choropleth
+
+df = load_df()
 
 cm = sns.light_palette("green", as_cmap=True)
 
 st.subheader("Which areas have a large number of sectors with a large PiN?", divider="green")
 with st.container(border=1):
-    threshold = st.slider("PiN threshold", 0, 100, 75)
+    threshold = st.slider("% of population in need", 0, 100, 75)
 col1, col2 = st.columns(2)
 with col1:
     st.markdown(":green-background[**Number of sectors above PiN threshold**]")

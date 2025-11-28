@@ -14,7 +14,7 @@ with col1:
         st.markdown(
             ":green-background[**PiN (1)**: Where is the highest concentration of population in need in the country?]")
         st.markdown(
-            "_This page gives an overview of how many people are in need in different parts of the country. The filters allow to switch between the distribution of PiN by administrative unit in absolute values and percentage of the total population of the unit considered._")
+            "_This page gives an overview of how many people are in need in different parts of the country._")
         st.page_link("pages/pin_1.py", label="Go to PiN (1)", icon="➡️")
     with st.container(border=True):
         st.markdown(
@@ -29,13 +29,13 @@ with col1:
             "_**(Q3.1)** This page maps PiN distribution by sector to support your analysis of PiN trends and drivers. Hovering over the maps displays the overall PiN and an overview of sectoral PiN for the selected area. It’s also possible to use the admin unit filters to focus on specific locations._")
         st.page_link("pages/pin_3_1.py", label="Go to PiN (3.1)", icon="➡️")
         st.markdown(
-            "_**(Q3.2)** The graphs on this page show which sectors have the highest PiN per area (use the admin unit filters to focus on specific locations), how many people are in need for each sector (use the filter to show individual population groups where available), and in how many areas each sector has the highest or second highest PiN._")
+            "_**(Q3.2)** The graphs on this page show which sectors have the highest PiN per area, how many people are in need for each sector, and in how many areas each sector has the highest or second highest PiN._")
         st.page_link("pages/pin_3_2.py", label="Go to PiN (3.2)", icon="➡️")
     with st.container(border=True):
         st.markdown(
             ":green-background[**PiN (4)**:  What is the PiN Trend as compared to the previous year?]")
         st.markdown(
-            "_The final page presents the change in Pin figures from the previous year, geographically and in my sector, to support your analysis of trends in PiN over time. Use the filter to focus on changes in specific locations or shifts in individual population groups._")
+            "_The final page presents the change in Pin figures from the previous year, geographically and by sector, to support your analysis of trends in PiN over time. Use the filter to focus on changes in specific locations or shifts in individual population groups._")
         st.page_link("pages/pin_4.py", label="Go to PiN (4)", icon="➡️")
 with col2:
     with st.container(border=True):
