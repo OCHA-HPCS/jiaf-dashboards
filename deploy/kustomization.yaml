@@ -5,6 +5,7 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+  - image-updater.yaml
 
 configMapGenerator:
   - name: global-config
