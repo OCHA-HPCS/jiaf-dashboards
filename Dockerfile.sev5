@@ -17,4 +17,4 @@ EXPOSE 8501
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
 ARG BASE_PATH="/severity-5"
-ENTRYPOINT ["streamlit", "run", "severity-5/app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.baseUrlPath=${BASE_PATH}"]
+ENTRYPOINT ["sh", "-c", "exec streamlit run severity-5/app.py --server.port=8501 --server.address=0.0.0.0 --server.baseUrlPath=${BASE_PATH}"]
