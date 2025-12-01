@@ -23,8 +23,10 @@ jobs:
         include:
           - dockerfile: Dockerfile
             image_suffix: ""
+            base_path: "/moz"
           - dockerfile: Dockerfile.sev5
             image_suffix: "-sev5"
+            base_path: "/severity-5"
 
     steps:
       - name: Checkout repository
@@ -59,3 +61,5 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            BASE_PATH=${{ matrix.base_path }}

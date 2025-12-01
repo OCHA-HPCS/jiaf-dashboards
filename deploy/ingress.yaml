@@ -21,7 +21,7 @@ spec:
                 name: jiaf-dashboards-sev5
                 port:
                   number: 80
-          - path: /MOZ
+          - path: /moz
             pathType: Prefix
             backend:
               service:
