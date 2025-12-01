@@ -17,6 +17,5 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8501
-              name: jiaf-dashboards
       imagePullSecrets:
         - name: regcred

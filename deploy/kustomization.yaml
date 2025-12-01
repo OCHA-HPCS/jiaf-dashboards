@@ -3,12 +3,13 @@ kind: Kustomization
 
 resources:
   - deployment.yaml
+  - service.yaml
   - ingress.yaml
 
 configMapGenerator:
   - name: global-config
     literals:
-      - HOSTNAME=dummy   # overwritten by cluster-side ConfigMap
+      - hostname=jiaf-dashboards.hpcs-cluster.cyruspellet.com
 
 vars:
   - name: HOSTNAME
