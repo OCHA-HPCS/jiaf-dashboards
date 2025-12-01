@@ -6,8 +6,8 @@ metadata:
 spec:
   namespace: argo-cd
   commonUpdateSettings:
-    updateStrategy: "newest-build"
-    allowTags: "sha-*"
+    updateStrategy: "latest"
+    allowTags: "regexp:^sha-[a-z0-9]+$"
     writeBackMethod: "git"
     pullSecret: "pullsecret:argo-cd/ghcr-cred"
   applicationRefs:
