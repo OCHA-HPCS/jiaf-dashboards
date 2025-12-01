@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jiaf-dashboards
+spec:
+  selector:
+    app: jiaf-dashboards
+  ports:
+    - port: 8501
+      targetPort: 8501
