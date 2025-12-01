@@ -1,3 +1,4 @@
+import pandas as pd
 import streamlit as st
 
 from data import load_df
@@ -10,7 +11,14 @@ with st.container(border=1):
     pin_threshold = st.slider("% of population in need", 0, 100, 60) / 100
     sev_threshold = st.slider("Severity threshold", 0, 5, 4)
 
-overlap_df = df[["Admin 1", "Admin 2", "Admin 2 P-Code", "% PiN", "Severity"]].copy()
+agg_df = df.copy()
+agg_df["Severity"] = pd.to_numeric(agg_df["Severity"], errors='coerce')
+overlap_df = agg_df.groupby(["Admin 1", "Admin 2", "Admin 2 P-Code"], as_index=False).agg({
+    "Final PiN": "sum",
+    "Population": "sum",
+    "Severity": "max"
+})
+overlap_df["% PiN"] = overlap_df["Final PiN"] / overlap_df["Population"]
 
 
 def categorize_area(row):
