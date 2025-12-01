@@ -6,5 +6,5 @@ spec:
   selector:
     app: jiaf-dashboards
   ports:
-    - port: 8501
+    - port: 80
       targetPort: 8501

@@ -14,3 +14,5 @@ spec:
       images:
         - alias: "jiaf-dashboards"
           imageName: "ghcr.io/ocha-hpcs/jiaf-dashboards"
+        - alias: "jiaf-dashboards-sev5"
+          imageName: "ghcr.io/ocha-hpcs/jiaf-dashboards-sev5"

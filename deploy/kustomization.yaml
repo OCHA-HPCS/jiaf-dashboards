@@ -3,7 +3,9 @@ kind: Kustomization
 
 resources:
   - deployment.yaml
+  - deployment-sev5.yaml
   - service.yaml
+  - service-sev5.yaml
   - ingress.yaml
   - image-updater.yaml
 

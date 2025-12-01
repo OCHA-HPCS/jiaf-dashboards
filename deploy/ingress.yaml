@@ -14,10 +14,17 @@ spec:
     - host: jiaf-dashboards.$(HOSTNAME)
       http:
         paths:
+          - path: /severity-5
+            pathType: Prefix
+            backend:
+              service:
+                name: jiaf-dashboards-sev5
+                port:
+                  number: 80
           - path: /
             pathType: Prefix
             backend:
               service:
                 name: jiaf-dashboards
                 port:
-                  number: 8501
+                  number: 80
