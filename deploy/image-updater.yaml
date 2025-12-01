@@ -8,7 +8,6 @@ spec:
   commonUpdateSettings:
     updateStrategy: "latest"
     allowTags: "regexp:^sha-[a-z0-9]+$"
-    writeBackMethod: "direct"
     pullSecret: "pullsecret:argo-cd/ghcr-cred"
   applicationRefs:
     - namePattern: "jiaf-dashboards*"
