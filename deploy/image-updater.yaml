@@ -8,6 +8,7 @@ spec:
   commonUpdateSettings:
     updateStrategy: "latest"
     forceUpdate: false
+    pullSecret: "pullsecret:default/regcred"
   applicationRefs:
     - namePattern: "jiaf-dashboards*"
       images:
