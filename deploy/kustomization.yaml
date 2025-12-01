@@ -18,7 +18,7 @@ vars:
   - name: HOSTNAME
     objref:
       kind: ConfigMap
-      name: global-config
+      name: global-config-jiaf
       apiVersion: v1
     fieldref:
       fieldpath: data.hostname
