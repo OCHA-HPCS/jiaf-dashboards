@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: jiaf-dashboards-sev5
 spec:
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       app: jiaf-dashboards-sev5
