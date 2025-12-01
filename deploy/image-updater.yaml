@@ -5,7 +5,7 @@ metadata:
 spec:
   namespace: argocd
   commonUpdateSettings:
-    updateStrategy: "semver"
+    updateStrategy: "latest"
     forceUpdate: false
   applicationRefs:
     - namePattern: "jiaf-dashboards*"
