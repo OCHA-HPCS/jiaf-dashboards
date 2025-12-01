@@ -2,8 +2,9 @@ apiVersion: argocd-image-updater.argoproj.io/v1alpha1
 kind: ImageUpdater
 metadata:
   name: jiaf-dashboards-updater
+  namespace: argo-cd
 spec:
-  namespace: argocd
+  namespace: argo-cd
   commonUpdateSettings:
     updateStrategy: "latest"
     forceUpdate: false
