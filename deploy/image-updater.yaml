@@ -6,6 +6,9 @@ metadata:
 spec:
   namespace: argo-cd
   commonUpdateSettings:
+    updateStrategy: "newest-build"
+    allowTags: "sha-*"
+    writeBackMethod: "git"
     pullSecret: "pullsecret:argo-cd/ghcr-cred"
   applicationRefs:
     - namePattern: "jiaf-dashboards*"
