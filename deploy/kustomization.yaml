@@ -9,7 +9,7 @@ resources:
 configMapGenerator:
   - name: global-config
     literals:
-      - hostname=jiaf-dashboards.hpcs-cluster.cyruspellet.com
+      - hostname=hpcs-cluster.cyruspellet.com
 
 vars:
   - name: HOSTNAME
