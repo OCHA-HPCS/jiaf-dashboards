@@ -4,6 +4,9 @@ metadata:
   name: jiaf-dashboards-ingress
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^/moz$ /moz/ permanent;
+      rewrite ^/severity-5$ /severity-5/ permanent;
 spec:
   ingressClassName: nginx
   tls:
