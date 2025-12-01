@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jiaf-dashboards-sev5
+spec:
+  selector:
+    app: jiaf-dashboards-sev5
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8501
