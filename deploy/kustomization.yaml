@@ -10,7 +10,7 @@ resources:
   - image-updater.yaml
 
 configMapGenerator:
-  - name: global-config
+  - name: global-config-jiaf
     literals:
       - hostname=hpcs-cluster.cyruspellet.com
 
