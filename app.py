@@ -56,7 +56,7 @@ def landing_page():
         
     for iso, name in countries:
         # Using markdown link to reload with query param
-        st.markdown(f"### [{name}](/?iso={iso})")
+        st.markdown(f"### [{name}](?iso={iso})")
 
 # Session State Logic to persist ISO across navigation
 if "iso" not in st.session_state:
