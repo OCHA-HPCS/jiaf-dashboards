@@ -65,15 +65,15 @@ def auto_center_zoom(codes, iso):
 
 
 @st.cache_data(ttl=3600)
-def make_choropleth(
+def _make_choropleth_internal(
         df: DataFrame,
         iso: str,
         color_col: str,
         legend: str,
-        color_scale: str = "Greens",
-        discrete_map: dict = {},
-        all_categories: list = None,
-        continuous: bool = False
+        color_scale: str,
+        discrete_map: dict,
+        all_categories: list,
+        continuous: bool
 ):
     config = get_config(iso)
     uri = config['cod_uri']
@@ -90,7 +90,6 @@ def make_choropleth(
             dummy_df = DataFrame({
                 pcode_col: ["DUMMY"] * len(missing_categories),
                 color_col: list(map(str, missing_categories)),
-                # Try to fill Admin 2 if it exists, otherwise empty
                 "Admin 2": [""] * len(missing_categories)
             })
             df = pd.concat([df, dummy_df], ignore_index=True)
@@ -127,3 +126,32 @@ def make_choropleth(
         coloraxis_colorbar_title_text=legend)
 
     return fig
+
+def make_choropleth(
+        df: DataFrame,
+        iso: str,
+        color_col: str,
+        legend: str,
+        color_scale: str = "Greens",
+        discrete_map: dict = None,
+        all_categories: list = None,
+        continuous: bool = False
+):
+    if discrete_map is None:
+        discrete_map = {}
+        
+    # Optimization: Extract only necessary columns to speed up hashing
+    config = get_config(iso)
+    pcode_col = config.get('geo', {}).get('pcode_col', "Admin 2 P-Code")
+    
+    cols_to_keep = [pcode_col, color_col]
+    if "Admin 2" in df.columns:
+        cols_to_keep.append("Admin 2")
+        
+    # Drop duplicates if any (though likely unique per pcode usually)
+    # We copy to avoid modifying original df
+    mini_df = df[cols_to_keep].copy()
+    
+    return _make_choropleth_internal(
+        mini_df, iso, color_col, legend, color_scale, discrete_map, all_categories, continuous
+    )
