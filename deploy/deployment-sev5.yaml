@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jiaf-dashboards-sev5
+spec:
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: jiaf-dashboards-sev5
+  template:
+    metadata:
+      labels:
+        app: jiaf-dashboards-sev5
+    spec:
+      containers:
+        - name: jiaf-dashboards-sev5
+          image: ghcr.io/ocha-hpcs/jiaf-dashboards-sev5:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8501
+      imagePullSecrets:
+        - name: regcred

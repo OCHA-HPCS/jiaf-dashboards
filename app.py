@@ -5,7 +5,6 @@ st.set_page_config(layout="wide", page_title="JIAF Dashboard", page_icon="🌍")
 # Reducing whitespace on the top of the page
 st.markdown("""
 <style>
-
 .block-container
 {
     padding-top: 0.5rem;
@@ -14,6 +13,10 @@ st.markdown("""
     margin-bottom: 0.5rem;
 }
 
+[data-testid="stSidebarNav"]::before {
+    content: "JIAF Dashboard";
+    font-size: 20px;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -37,7 +40,7 @@ pages = {
         st.Page("pages/sev_3_1.py", title="Severity (3.1)"),
         st.Page("pages/sev_3_2.py", title="Severity (3.2)"),
     ],
-    "Correlations": [
+    "Linkages": [
         st.Page("pages/link_1.py", title="Links (1)"),
         st.Page("pages/link_2.py", title="Links (2)"),
     ],

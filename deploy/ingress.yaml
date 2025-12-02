@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jiaf-dashboards-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - jiaf-dashboards.$(HOSTNAME)
+      secretName: jiaf-dashboards-cert-tls
+  rules:
+    - host: jiaf-dashboards.$(HOSTNAME)
+      http:
+        paths:
+          - path: /severity-5
+            pathType: Prefix
+            backend:
+              service:
+                name: jiaf-dashboards-sev5
+                port:
+                  number: 80
+          - path: /moz
+            pathType: Prefix
+            backend:
+              service:
+                name: jiaf-dashboards
+                port:
+                  number: 80

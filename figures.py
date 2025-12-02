@@ -29,8 +29,13 @@ def load_cods():
 cods = load_cods()
 
 
-def auto_center_zoom(geojson, codes):
-    gdf = gpd.GeoDataFrame.from_features(geojson["features"])
+@st.cache_data(ttl=86400)
+def get_cods_gdf():
+    return gpd.GeoDataFrame.from_features(cods["features"])
+
+
+def auto_center_zoom(codes):
+    gdf = get_cods_gdf()
     subset = gdf[gdf["#adm2+code+v_pcode"].isin(codes)]
     minx, miny, maxx, maxy = subset.total_bounds
     center = {"lon": (minx + maxx) / 2, "lat": (miny + maxy) / 2}
@@ -40,6 +45,7 @@ def auto_center_zoom(geojson, codes):
     return center, zoom
 
 
+@st.cache_data(ttl=3600)
 def make_choropleth(
         df: DataFrame,
         color_col: str,
@@ -49,7 +55,7 @@ def make_choropleth(
         all_categories: list = None,
         continuous: bool = False
 ):
-    center, zoom = auto_center_zoom(cods, df["Admin 2 P-Code"])
+    center, zoom = auto_center_zoom(df["Admin 2 P-Code"])
 
     if not continuous and all_categories:
         missing_categories = set(all_categories) - set(df[color_col].unique())
@@ -61,7 +67,6 @@ def make_choropleth(
             })
             df = pd.concat([df, dummy_df], ignore_index=True)
 
-    # filter values not in all_categories
     if not continuous and all_categories:
         df = df[df[color_col].isin(map(str, all_categories))]
 

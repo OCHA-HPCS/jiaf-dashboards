@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - deployment.yaml
+  - deployment-sev5.yaml
+  - service.yaml
+  - service-sev5.yaml
+  - ingress.yaml
+  - image-updater.yaml
+
+configMapGenerator:
+  - name: global-config-jiaf
+    literals:
+      - hostname=hpcs-cluster.cyruspellet.com
+
+vars:
+  - name: HOSTNAME
+    objref:
+      kind: ConfigMap
+      name: global-config-jiaf
+      apiVersion: v1
+    fieldref:
+      fieldpath: data.hostname

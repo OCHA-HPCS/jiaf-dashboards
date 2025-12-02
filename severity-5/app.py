@@ -4,8 +4,9 @@ import requests
 import streamlit as st
 
 surveys = {
-    "Columbia": "ajiqJ68LUrt4d4v4yRb7gw",
-    "Myanmar": "awizpCCNrU6UiXxcqf4grg"
+    "Colombia": "ajiqJ68LUrt4d4v4yRb7gw",
+    "Myanmar": "awizpCCNrU6UiXxcqf4grg",
+    "Sudan": "aX8aLeo8iuxQQazNRKAVKD"
 }
 
 st.set_page_config(layout="wide", page_title="JIAF Severity 5 Review Dashboard", page_icon="🌍")

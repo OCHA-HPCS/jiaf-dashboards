@@ -1,0 +1,18 @@
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: jiaf-dashboards-updater
+  namespace: argo-cd
+spec:
+  namespace: argo-cd
+  commonUpdateSettings:
+    updateStrategy: "latest"
+    allowTags: "regexp:^sha-[a-z0-9]+$"
+    pullSecret: "pullsecret:argo-cd/ghcr-cred"
+  applicationRefs:
+    - namePattern: "jiaf-dashboards*"
+      images:
+        - alias: "jiaf-dashboards"
+          imageName: "ghcr.io/ocha-hpcs/jiaf-dashboards"
+        - alias: "jiaf-dashboards-sev5"
+          imageName: "ghcr.io/ocha-hpcs/jiaf-dashboards-sev5"
