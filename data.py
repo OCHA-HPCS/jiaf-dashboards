@@ -20,23 +20,18 @@ def get_sectors(iso):
     return config.get('sectors', [])
 
 @st.cache_data(ttl=3600)
-def load_raw_data(iso):
+def load_raw_data(iso, sheet_name):
     config = get_config(iso)
     file_path = config['file_path']
-    sheet_names = [
-        config['sheets']['pin'],
-        config['sheets']['history'],
-        config['sheets']['severity']
-    ]
-    return pd.read_excel(file_path, sheet_name=sheet_names, header=None, engine="calamine")
+    # Load only the requested sheet
+    return pd.read_excel(file_path, sheet_name=sheet_name, header=None, engine="calamine")
 
 @st.cache_data(ttl=3600)
 def load_df(iso):
     # Load config and data
     config = get_config(iso)
-    raw_data = load_raw_data(iso)
     sheet_name = config['sheets']['pin']
-    df = raw_data[sheet_name].copy()
+    df = load_raw_data(iso, sheet_name).copy()
     
     header_row = config['params'].get('header_row', 2)
     start_row = config['params'].get('start_row', 3)
@@ -94,9 +89,8 @@ def load_df(iso):
 @st.cache_data(ttl=3600)
 def load_hist(iso):
     config = get_config(iso)
-    raw_data = load_raw_data(iso)
     sheet_name = config['sheets']['history']
-    hist_df = raw_data[sheet_name].copy()
+    hist_df = load_raw_data(iso, sheet_name).copy()
     
     header_row = config['params'].get('header_row', 2)
     start_row = config['params'].get('start_row', 3)
@@ -152,9 +146,8 @@ def load_hist(iso):
 @st.cache_data(ttl=3600)
 def load_sev(iso):
     config = get_config(iso)
-    raw_data = load_raw_data(iso)
     sheet_name = config['sheets']['severity']
-    sev_df = raw_data[sheet_name].copy()
+    sev_df = load_raw_data(iso, sheet_name).copy()
     
     header_row = config['params'].get('header_row', 2)
     start_row = config['params'].get('start_row', 3)
