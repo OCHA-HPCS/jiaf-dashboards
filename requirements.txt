@@ -7,3 +7,4 @@ numpy~=2.3.4
 python-calamine
 requests
 PyYAML
+pyarrow

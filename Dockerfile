@@ -28,6 +28,10 @@ ENV PATH="/opt/venv/bin:$PATH"
 # Copy application code
 COPY . .
 
+# Precompute data for Turbo mode
+# This ensures parquet files are generated and baked into the image
+RUN python precompute.py
+
 EXPOSE 8501
 
 # Use python for healthcheck to avoid installing curl
