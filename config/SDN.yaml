@@ -1,0 +1,46 @@
+name: Sudan
+file_path: Workspace_3A-3B_PINSev_Intersectoral-populated-SDN_2026_toshare_v3.xlsx
+cod_uri: https://fdw.fews.net/api/feature/?country_code=SD&unit_type=admin2&format=geojson
+geo:
+  pcode_col: "Admin 2 P-Code"
+  geojson_key: "properties.p_code"
+sheets:
+  pin: "Cluster PIN"
+  history: "PiN Historical Trend"
+  severity: "Cluster Severity"
+params:
+  header_row: 2
+  start_row: 3
+sectors:
+  - Site Management
+  - Education
+  - Food Security
+  - Health
+  - Nutrition
+  - Protection
+  - Shelter NFI
+  - WASH
+column_mapping:
+  Final PiN: "Final PiN with refugee"
+  Population: "Total Population"
+  Food Security: "Food Security and Livlihoods"
+  Site Management: "Site Management "
+  Health: "Health "
+  Shelter NFI: "Shelter NFI "
+  # Historical mappings
+  "Site Management - old": "Site Management - Old"
+  "Education - old": "Education Old"
+  "Food Security - old": "Food Security and Livlihoods Old"
+  "Health - old": "Health Old"
+  "Nutrition - old": "Nutrition Old"
+  "Protection - old": "Protection Old"
+  "Shelter NFI - old": "Shelter NFI Old"
+  "WASH - old": "WASH Old"
+  "Site Management - new": "Site Management - New"
+  "Education - new": "Education New"
+  "Food Security - new": "Food Security and Livlihoods New"
+  "Health - new": "Health New"
+  "Nutrition - new": "Nutrition New"
+  "Protection - new": "Protection New"
+  "Shelter NFI - new": "Shelter NFI New"
+  "WASH - new": "WASH New"

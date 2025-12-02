@@ -25,7 +25,7 @@ jobs:
         include:
           - dockerfile: Dockerfile
             image_suffix: ""
-            base_path: "/moz"
+            base_path: "/country"
           - dockerfile: Dockerfile.sev5
             image_suffix: "-sev5"
             base_path: "/severity-5"

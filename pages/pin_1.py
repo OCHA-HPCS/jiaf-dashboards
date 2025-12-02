@@ -4,7 +4,12 @@ import streamlit as st
 from data import load_df
 from figures import make_choropleth
 
-df = load_df()
+iso = st.query_params.get("iso")
+if not iso:
+    st.error("No country selected.")
+    st.stop()
+
+df = load_df(iso)
 
 cm = sns.light_palette("green", as_cmap=True)
 
@@ -12,7 +17,7 @@ st.subheader("Where is the highest concentration of population in need in the co
 col1, col2 = st.columns(2)
 with col1:
     st.markdown("**:green-background[Final PiN] by admin area**")
-    final_pin_fig = make_choropleth(df, "Final PiN", "PiN", "Greens", continuous=True)
+    final_pin_fig = make_choropleth(df, iso, "Final PiN", "PiN", "Greens", continuous=True)
     st.plotly_chart(final_pin_fig, width="stretch", key="pin2")
 with col2:
     df_disp = df[["Admin 1", "Admin 2", "Final PiN", "% PiN"]].sort_values(by="Final PiN",

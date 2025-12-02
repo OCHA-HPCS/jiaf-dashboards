@@ -1,5 +1,5 @@
 import json
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 
 import geopandas as gpd
 import numpy as np
@@ -7,9 +7,9 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 from pandas import DataFrame
+from data import get_config
 
 MAPBOX_ACCESS_TOKEN = "pk.eyJ1IjoiY3lydXMtcGVsbGV0IiwiYSI6ImNtaGttcjE2dzFpNzEyanNoejA2d2UycnMifQ.8pSHcMqcZiNnzY8w2mAg9A"
-COD_URI = "https://itos-humanitarian.s3.amazonaws.com/MOZ/COD_MOZ_Admin2.geojson"
 
 SEV_DM = {
     "1": "#f7fbff",
@@ -21,22 +21,41 @@ SEV_DM = {
 
 
 @st.cache_data(ttl=86400)
-def load_cods():
-    with urlopen(COD_URI) as response:
+def load_cods(uri):
+    req = Request(uri, headers={'User-Agent': 'Mozilla/5.0'})
+    with urlopen(req) as response:
         return json.load(response)
 
 
-cods = load_cods()
-
-
 @st.cache_data(ttl=86400)
-def get_cods_gdf():
+def get_cods_gdf(uri):
+    cods = load_cods(uri)
     return gpd.GeoDataFrame.from_features(cods["features"])
 
 
-def auto_center_zoom(codes):
-    gdf = get_cods_gdf()
-    subset = gdf[gdf["#adm2+code+v_pcode"].isin(codes)]
+def auto_center_zoom(codes, iso):
+    config = get_config(iso)
+    uri = config['cod_uri']
+    key = config.get('geo', {}).get('geojson_key', 'properties.#adm2+code+v_pcode')
+    prop_name = key.replace("properties.", "")
+    
+    gdf = get_cods_gdf(uri)
+    # Ensure the property exists in GDF
+    if prop_name not in gdf.columns:
+        # Fallback or error?
+        # If property is inside "properties", from_features handles it. 
+        # Sometimes naming might differ slightly?
+        pass
+
+    if prop_name in gdf.columns:
+        subset = gdf[gdf[prop_name].isin(codes)]
+    else:
+        subset = pd.DataFrame() # Empty
+
+    if subset.empty:
+        # Default center if no match
+        return {"lon": 35, "lat": -18}, 5
+
     minx, miny, maxx, maxy = subset.total_bounds
     center = {"lon": (minx + maxx) / 2, "lat": (miny + maxy) / 2}
     lon_range = maxx - minx
@@ -48,6 +67,7 @@ def auto_center_zoom(codes):
 @st.cache_data(ttl=3600)
 def make_choropleth(
         df: DataFrame,
+        iso: str,
         color_col: str,
         legend: str,
         color_scale: str = "Greens",
@@ -55,14 +75,22 @@ def make_choropleth(
         all_categories: list = None,
         continuous: bool = False
 ):
-    center, zoom = auto_center_zoom(df["Admin 2 P-Code"])
+    config = get_config(iso)
+    uri = config['cod_uri']
+    pcode_col = config.get('geo', {}).get('pcode_col', "Admin 2 P-Code")
+    geojson_key = config.get('geo', {}).get('geojson_key', "properties.#adm2+code+v_pcode")
+    
+    cods = load_cods(uri)
+    
+    center, zoom = auto_center_zoom(df[pcode_col], iso)
 
     if not continuous and all_categories:
         missing_categories = set(all_categories) - set(df[color_col].unique())
         if missing_categories:
             dummy_df = DataFrame({
-                "Admin 2 P-Code": ["DUMMY"] * len(missing_categories),
+                pcode_col: ["DUMMY"] * len(missing_categories),
                 color_col: list(map(str, missing_categories)),
+                # Try to fill Admin 2 if it exists, otherwise empty
                 "Admin 2": [""] * len(missing_categories)
             })
             df = pd.concat([df, dummy_df], ignore_index=True)
@@ -74,9 +102,9 @@ def make_choropleth(
         df,
         geojson=cods,
         color=color_col,
-        locations="Admin 2 P-Code",
-        featureidkey="properties.#adm2+code+v_pcode",
-        hover_name="Admin 2",
+        locations=pcode_col,
+        featureidkey=geojson_key,
+        hover_name="Admin 2" if "Admin 2" in df.columns else None,
         mapbox_style="light",
         center=center,
         zoom=zoom,
@@ -90,7 +118,7 @@ def make_choropleth(
     if not continuous and all_categories and missing_categories:
         fig.update_traces(
             selector=dict(type="choroplethmapbox"),
-            marker_opacity=[0 if x == "DUMMY" else 1 for x in df["Admin 2 P-Code"]]
+            marker_opacity=[0 if x == "DUMMY" else 1 for x in df[pcode_col]]
         )
 
     fig.update_layout(
