@@ -244,7 +244,7 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
                     margin=dict(t=0, l=0, r=0, b=0),
                     height=140,
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
             else:
                 st.info("No valid response columns (yes/no/rmi) found for this module.")
             st.markdown(f"#### Questions")
@@ -281,7 +281,7 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
                     },
                     margin=dict(t=0, l=0, r=0, b=0)
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width="stretch")
             else:
                 st.info("No valid response columns (yes/no/rmi) found for this module.")
 
@@ -317,7 +317,7 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
                         st.markdown(f"##### 📝 {question_label}")
                         # Display comments as a list
                         st.markdown(
-                            "\n".join([f"* **Submission Comment:** {comment}" for comment in comments])
+                            "\n".join([f"* {comment}" for comment in comments])
                         )
                         st.markdown("---")  # Separator between questions
             # --- Justification Display End ---
@@ -369,6 +369,7 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
             # --------------------------------------------------------------------------
             # --- Areas Justification Display Start (Order-Based Logic) ----------------
             # --------------------------------------------------------------------------
+
             st.markdown("#### Areas Justifications")
 
             area_prefix_path = "areas"
@@ -384,6 +385,18 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
                 for justif_col in justif_cols_in_df:
                     area_label = justif_labels[justif_col]
 
+                    # Attempt to improve label by finding the question matching the prefix
+                    potential_matches = [
+                        q for q in form_df.index
+                        if isinstance(q, str) and justif_col.startswith(q) and justif_col != q
+                    ]
+                    if potential_matches:
+                        # Sort by length descending to get the longest prefix (most specific question)
+                        best_match = sorted(potential_matches, key=len, reverse=True)[0]
+                        found_label = form_df.at[best_match, "label"]
+                        if not pd.isna(found_label) and str(found_label).strip() != "":
+                            area_label = found_label
+
                     # Extract non-missing justification comments
                     comments_series = df[justif_col].astype(str).str.strip()
 
@@ -395,11 +408,9 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
                     comments = comments_filtered.tolist()
 
                     if comments:
-                        st.markdown(f"##### 📝 {area_label}")
-                        st.markdown(f"###### Field: `{justif_col}`")
-                        # Display comments as a list
+                        st.markdown(f"##### 📝 {area_label}")                        # Display comments as a list
                         st.markdown(
-                            "\n".join([f"* **Submission Comment:** {comment}" for comment in comments])
+                            "\n".join([f"* {comment}" for comment in comments])
                         )
                         st.markdown("---")  # Separator between areas
             # --- Areas Justification Display End ---
