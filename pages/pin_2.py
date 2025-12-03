@@ -34,7 +34,7 @@ with col1:
     # Count sectors exceeding threshold
     df["Sectors above threshold"] = df[[f"{s}%" for s in valid_sectors]].gt(threshold / 100).sum(axis=1)
     
-    fig = make_choropleth(df, iso, "Sectors above threshold", "Sectors", "Greens")
+    fig = make_choropleth(df, iso, "Sectors above threshold", "Sectors", "Greens", continuous=True)
     st.plotly_chart(fig, width="stretch")
 with col2:
     df_disp = df[["Admin 1", "Admin 2", "Final PiN", "Sectors above threshold"]].sort_values(
