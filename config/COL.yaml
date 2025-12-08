@@ -1,6 +1,6 @@
 name: Colombia
 file_path: Worksheet_Colombia_JIAF_PiNySeveridad_2026_Final_V4.xlsx
-cod_uri: /Users/cy/Desktop/UN/jiaf-dashboards/COD_COL_Admin2.geojson
+cod_uri: COD_COL_Admin2.geojson
 geo:
   pcode_col: "Admin 2 Código P"
   geojson_key: "properties.p_code"
