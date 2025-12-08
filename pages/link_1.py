@@ -46,11 +46,6 @@ else:
 # We'll assume the default columns exist for now, as per MOZ.
 group_cols = ["Admin 1", "Admin 2"]
 # Check for P-Code column
-pcode_col = "Admin 2 P-Code" # Default
-for col in df.columns:
-    if "P-Code" in col or "pcode" in col.lower():
-        pcode_col = col
-        break
 if pcode_col in df.columns:
     group_cols.append(pcode_col)
 

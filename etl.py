@@ -47,10 +47,15 @@ def process_pin_data(config, df):
     numeric_cols = ["Final PiN", "Population"] + sectors
     for col in numeric_cols:
         if col in df.columns:
+             # Replace excel-style hyphens with 0
+             df[col] = df[col].replace({'-': 0})
              df[col] = pd.to_numeric(df[col], errors='coerce')
 
     # Check for Population Group aggregation
     pcode_col = config.get('geo', {}).get('pcode_col', "Admin 2 P-Code")
+    
+    if pcode_col in df.columns:
+        df = df.dropna(subset=[pcode_col])
     
     if "Population Group" in df.columns and pcode_col in df.columns:
         group_cols = [pcode_col]
@@ -92,13 +97,19 @@ def process_hist_data(config, df):
     numeric_cols = []
     for old, new in zip(sectors_old, sectors_new):
         if old in df.columns:
+            df[old] = df[old].replace({'-': 0})
             df[old] = pd.to_numeric(df[old], errors='coerce')
             numeric_cols.append(old)
         if new in df.columns:
+            df[new] = df[new].replace({'-': 0})
             df[new] = pd.to_numeric(df[new], errors='coerce')
             numeric_cols.append(new)
             
     pcode_col = config.get('geo', {}).get('pcode_col', "Admin 2 P-Code")
+    
+    if pcode_col in df.columns:
+        df = df.dropna(subset=[pcode_col])
+    
     if "Population Group" in df.columns and pcode_col in df.columns:
         group_cols = [pcode_col]
         if "Admin 1" in df.columns:
@@ -136,6 +147,7 @@ def process_sev_data(config, df):
     sectors = config.get('sectors', [])
     for s in sectors:
         if s in df.columns:
+            df[s] = df[s].replace({'-': 0})
             df[s] = pd.to_numeric(df[s], errors='coerce')
             
     pcode_col = config.get('geo', {}).get('pcode_col', "Admin 2 P-Code")

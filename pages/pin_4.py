@@ -18,8 +18,13 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.markdown("**:green-background[Overall PiN change] by admin area**")
+    
+    # Calculate symmetric range for diverging scale
+    max_val = hist_df["PiN Delta"].abs().max()
+    
     fig = make_choropleth(hist_df, iso, "PiN Delta", "PiN Change",
-                          "Temps", continuous=True)
+                          "Temps", continuous=True,
+                          range_color=[-max_val, max_val])
     st.plotly_chart(fig, width="stretch")
 
     if sectors:

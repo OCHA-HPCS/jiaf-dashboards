@@ -15,6 +15,7 @@ st.subheader("To what extent do sectoral PiNs cross-correlate?", divider="violet
 
 if sectors:
     xc_df = df[sectors].corr()
+    xc_df = xc_df.fillna(0)  # Fill NaN correlations (e.g. constant columns) with 0
     xc_df.index.name = "Sector"
     for i in range(len(sectors)):
         xc_df.iat[i, i] = 1.0

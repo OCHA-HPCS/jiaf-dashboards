@@ -1,0 +1,44 @@
+name: Colombia
+file_path: Worksheet_Colombia_JIAF_PiNySeveridad_2026_Final_V4.xlsx
+cod_uri: /Users/cy/Desktop/UN/jiaf-dashboards/COD_COL_Admin2.geojson
+geo:
+  pcode_col: "Admin 2 Código P"
+  geojson_key: "properties.p_code"
+sheets:
+  pin: "WS - 3.1 PiN Total"
+  history: "Tendencia histórica de PiN"
+  severity: "WS - 3.2 Severidad Intersector"
+params:
+  header_row: 2
+  start_row: 3
+sectors:
+  - Food Security and Nutrition
+  - Health
+  - Education
+  - Protection
+  - Shelter / NFI
+  - WASH
+  - Child Protection
+  - GBV
+  - Acción contra las minas
+  - HLP
+column_mapping:
+  Final PiN: "PiN final"
+  Population: "Población 2026"
+  # Severity mappings (based on inspection of similar sheets)
+  Final Severity: "Final Severity"
+  
+  # Historical mappings
+  "Food Security and Nutrition - old": "Seguridad Alimentaria y Nutrición - antiguo"
+  "Health - old": "Salud - antiguo"
+  "Education - old": "Educación en Emergencias - antiguo"
+  "Protection - old": "Protección - antiguo"
+  "Shelter / NFI - old": "Albergues y Alojamientos - antiguo"
+  "WASH - old": "WASH - antiguo"
+  
+  "Food Security and Nutrition - new": "Seguridad Alimentaria y Nutrición - nuevo"
+  "Health - new": "Salud - nuevo"
+  "Education - new": "Educación en Emergencias - nuevo"
+  "Protection - new": "Protección - nuevo"
+  "Shelter / NFI - new": "Albergues y Alojamientos - nuevo"
+  "WASH - new": "WASH - nuevo"
