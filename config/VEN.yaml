@@ -34,7 +34,9 @@ column_mapping:
     - "Admin 2 Código P"
 
   # Sector mappings
-  "Food Security and Nutrition": "SAMV"
+  "Food Security and Nutrition":
+    - "SAMV"
+    - "NUT"
   "Health": "SAL"
   "Education": "EDU"
   "Protection": "PRO"
@@ -43,13 +45,17 @@ column_mapping:
   "GBV": "VBG"
 
   # Historical mappings
-  "Food Security and Nutrition - old": "SAMV25"
+  "Food Security and Nutrition - old":
+    - "SAMV25"
+    - "NUT25"
   "Health - old": "SAL25"
   "Education - old": "EDU25"
   "Protection - old": "PRO25"
   "WASH - old": "ASH25"
 
-  "Food Security and Nutrition - new": "SAMV26"
+  "Food Security and Nutrition - new":
+    - "SAMV26"
+    - "NUT26"
   "Health - new": "SAL26"
   "Education - new": "EDU26"
   "Protection - new": "PRO26"

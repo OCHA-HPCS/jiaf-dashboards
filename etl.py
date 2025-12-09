@@ -36,18 +36,39 @@ def process_pin_data(config, df):
     df = clean_columns(df)
     df = df.iloc[start_row:].reset_index(drop=True)
     
+    sectors = config.get('sectors', [])
+    
     # Handle mapping: Internal -> Excel
     mapping = config.get('column_mapping', {})
-    inv_map = {}
-    for k, v in mapping.items():
-        if isinstance(v, list):
-            for val in v:
-                inv_map[val] = k
-        else:
-            inv_map[v] = k
-    df = df.rename(columns=inv_map)
     
-    sectors = config.get('sectors', [])
+    renames = {}
+    aggregations = {}
+    
+    for k, v in mapping.items():
+        if isinstance(v, str):
+            renames[v] = k
+        elif isinstance(v, list):
+            # If it is a sector, aggregate. Else, treat as aliases (rename).
+            if k in sectors:
+                aggregations[k] = v
+            else:
+                for val in v:
+                    renames[val] = k
+
+    df = df.rename(columns=renames)
+
+    # Apply aggregations
+    for k, v in aggregations.items():
+        # Sum columns if they exist
+        cols_to_sum = [c for c in v if c in df.columns]
+        if cols_to_sum:
+            # Convert to numeric first to ensure summation works
+            for c in cols_to_sum:
+                df[c] = df[c].astype(str).replace({'-': '0'})
+                df[c] = df[c].str.replace(r'NoPIN26\s*', '', regex=True)
+                df[c] = pd.to_numeric(df[c], errors='coerce').fillna(0)
+            
+            df[k] = df[cols_to_sum].sum(axis=1)
     
     # Convert numeric columns
     numeric_cols = ["Final PiN", "Population"] + sectors
@@ -99,17 +120,40 @@ def process_hist_data(config, df):
     df = clean_columns(df)
     df = df.iloc[start_row:].reset_index(drop=True)
     
-    mapping = config.get('column_mapping', {})
-    inv_map = {}
-    for k, v in mapping.items():
-        if isinstance(v, list):
-            for val in v:
-                inv_map[val] = k
-        else:
-            inv_map[v] = k
-    df = df.rename(columns=inv_map)
-    
     sectors = config.get('sectors', [])
+    mapping = config.get('column_mapping', {})
+    
+    renames = {}
+    aggregations = {}
+    
+    for k, v in mapping.items():
+        if isinstance(v, str):
+            renames[v] = k
+        elif isinstance(v, list):
+            # Check if k is related to a sector (exact match or history suffix)
+            is_sector_related = k in sectors or \
+                                (k.endswith(' - old') and k[:-6] in sectors) or \
+                                (k.endswith(' - new') and k[:-6] in sectors)
+            
+            if is_sector_related:
+                aggregations[k] = v
+            else:
+                for val in v:
+                    renames[val] = k
+    
+    df = df.rename(columns=renames)
+    
+    for k, v in aggregations.items():
+        # Sum columns if they exist
+        cols_to_sum = [c for c in v if c in df.columns]
+        if cols_to_sum:
+            # Convert to numeric first
+            for c in cols_to_sum:
+                df[c] = df[c].astype(str).replace({'-': '0'})
+                df[c] = df[c].str.replace(r'NoPIN26\s*', '', regex=True)
+                df[c] = pd.to_numeric(df[c], errors='coerce').fillna(0)
+            
+            df[k] = df[cols_to_sum].sum(axis=1)
     sectors_old = [f"{sector} - old" for sector in sectors]
     sectors_new = [f"{sector} - new" for sector in sectors]
     
@@ -166,17 +210,35 @@ def process_sev_data(config, df):
     df = clean_columns(df)
     df = df.iloc[start_row:].reset_index(drop=True)
     
-    mapping = config.get('column_mapping', {})
-    inv_map = {}
-    for k, v in mapping.items():
-        if isinstance(v, list):
-            for val in v:
-                inv_map[val] = k
-        else:
-            inv_map[v] = k
-    df = df.rename(columns=inv_map)
-
     sectors = config.get('sectors', [])
+    mapping = config.get('column_mapping', {})
+    
+    renames = {}
+    aggregations = {}
+    
+    for k, v in mapping.items():
+        if isinstance(v, str):
+            renames[v] = k
+        elif isinstance(v, list):
+            if k in sectors:
+                aggregations[k] = v
+            else:
+                for val in v:
+                    renames[val] = k
+    
+    df = df.rename(columns=renames)
+    
+    for k, v in aggregations.items():
+        # Sum columns if they exist
+        cols_to_sum = [c for c in v if c in df.columns]
+        if cols_to_sum:
+            # Convert to numeric first
+            for c in cols_to_sum:
+                df[c] = df[c].astype(str).replace({'-': '0'})
+                df[c] = df[c].str.replace(r'NoPIN26\s*', '', regex=True)
+                df[c] = pd.to_numeric(df[c], errors='coerce').fillna(0)
+            
+            df[k] = df[cols_to_sum].sum(axis=1)
     for s in sectors:
         if s in df.columns:
             df[s] = df[s].astype(str).replace({'-': '0'})
