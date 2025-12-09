@@ -56,6 +56,25 @@ form_df_raw = fetch_form(survey_id)
 # Keep the indexed version for standard question lookups (used in charts and view dialog)
 form_df = form_df_raw.drop_duplicates(subset="$xpath").set_index("$xpath")
 
+def wrap_label(text, width=80):
+    words = text.split()
+    lines = []
+    current = ""
+
+    for word in words:
+        # If adding the next word exceeds width → start a new line
+        if len(current) + len(word) + 1 > width:
+            lines.append(current)
+            current = word
+        else:
+            current = word if current == "" else current + " " + word
+
+    # Add the last line
+    if current:
+        lines.append(current)
+
+    return "<br>".join(lines)
+
 
 # --- HELPER FUNCTION: GET LABELS BY FORM ORDER ---
 def get_justification_labels_by_order(form_df_raw, prefix_path):
@@ -226,6 +245,7 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
                         value_name="Count"
                     )
                 )
+                oo_long["label"] = oo_long["label"].apply(wrap_label)
                 fig = px.bar(
                     oo_long,
                     y="label",
@@ -260,6 +280,7 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
                         value_name="Count"
                     )
                 )
+                df_module_long["label"] = df_module_long["label"].apply(wrap_label)
                 fig = px.bar(
                     df_module_long,
                     y="label",
@@ -345,6 +366,7 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
                         value_name="Count"
                     )
                 )
+                df_areas_long["label"] = df_areas_long["label"].apply(wrap_label)
                 fig = px.bar(
                     df_areas_long,
                     y="label",
