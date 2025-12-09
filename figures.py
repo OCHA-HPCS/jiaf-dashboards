@@ -71,62 +71,24 @@ def auto_center_zoom(codes, iso):
 
 
 @st.cache_data(ttl=3600)
-
-
 def _make_choropleth_internal(
-
-
         df: DataFrame,
-
-
         iso: str,
-
-
         color_col: str,
-
-
         legend: str,
-
-
         color_scale: str,
-
-
         discrete_map: dict,
-
-
         all_categories: list,
-
-
         continuous: bool,
-
-
         **kwargs
-
-
 ):
-
-
     config = get_config(iso)
-
-
     uri = config['cod_uri']
-
-
     pcode_col = config.get('geo', {}).get('pcode_col', "Admin 2 P-Code")
-
-
     geojson_key = config.get('geo', {}).get('geojson_key', "properties.#adm2+code+v_pcode")
-
-
     
-
-
     cods = load_cods(uri)
-
-
     
-
-
     center, zoom = auto_center_zoom(df[pcode_col], iso)
 
 

@@ -1,6 +1,6 @@
 name: Mozambique
 file_path: MOZ_Worksheet_3A_3B_PiN_Sev_V4_2026_1_original.xlsx
-cod_uri: https://itos-humanitarian.s3.amazonaws.com/MOZ/COD_MOZ_Admin2.geojson
+cod_uri: precomputed/MOZ/moz_admin2_simplified.geojson
 geo:
   pcode_col: "Admin 2 P-Code"
   geojson_key: "properties.#adm2+code+v_pcode"

@@ -16,16 +16,20 @@ pcode_col = config.get('geo', {}).get('pcode_col', "Admin 2 P-Code")
 
 # Merge Severity if not present
 if "Severity" not in df.columns:
-    # Try to find severity column in sev_df
-    sev_col = "Final Severity"
-    if sev_col not in sev_df.columns:
-        if "Severity" in sev_df.columns:
-            sev_col = "Severity"
-            
-    if sev_col in sev_df.columns and pcode_col in df.columns and pcode_col in sev_df.columns:
-        # Merge only the severity column
-        df = df.merge(sev_df[[pcode_col, sev_col]], on=pcode_col, how="left")
-        df["Severity"] = df[sev_col]
+    # Check if Final Severity is already in df
+    if "Final Severity" in df.columns:
+        df["Severity"] = df["Final Severity"]
+    else:
+        # Try to find severity column in sev_df
+        sev_col = "Final Severity"
+        if sev_col not in sev_df.columns:
+            if "Severity" in sev_df.columns:
+                sev_col = "Severity"
+                
+        if sev_col in sev_df.columns and pcode_col in df.columns and pcode_col in sev_df.columns:
+            # Merge only the severity column
+            df = df.merge(sev_df[[pcode_col, sev_col]], on=pcode_col, how="left")
+            df["Severity"] = df[sev_col]
 
 st.subheader("Which areas have both high PiN and high Severity?", divider="violet")
 with st.container(border=1):

@@ -1,0 +1,56 @@
+name: Venezuela
+file_path: OVE_3A 3B PIN SEV_2026_ES.xlsx
+cod_uri: precomputed/VEN/ven_admin2_simplified.geojson
+geo:
+  pcode_col: "Admin 2 P-Code"
+  geojson_key: "properties.p_code"
+sheets:
+  pin: "WS - 3.1 PiN Total"
+  history: "Tendencia histórica de PiN"
+  severity: "WS - 3.2 Severidad Intersector"
+params:
+  header_row: 2
+  start_row: 3
+sectors:
+  - Food Security and Nutrition
+  - Health
+  - Education
+  - Protection
+  - Shelter / NFI
+  - WASH
+  - Child Protection
+  - GBV
+  - HLP
+column_mapping:
+  Final PiN: "PiN final"
+  Population: "Población"
+  Final Severity:
+    - "Severidad"
+    - "Severidad final"
+  Admin 1: "Admin1"
+  Admin 2: "Admin2"
+  Admin 2 P-Code:
+    - "Admin2PCODE"
+    - "Admin 2 Código P"
+
+  # Sector mappings
+  "Food Security and Nutrition": "SAMV"
+  "Health": "SAL"
+  "Education": "EDU"
+  "Protection": "PRO"
+  "WASH": "ASH"
+  "Child Protection": "NNA"
+  "GBV": "VBG"
+
+  # Historical mappings
+  "Food Security and Nutrition - old": "SAMV25"
+  "Health - old": "SAL25"
+  "Education - old": "EDU25"
+  "Protection - old": "PRO25"
+  "WASH - old": "ASH25"
+
+  "Food Security and Nutrition - new": "SAMV26"
+  "Health - new": "SAL26"
+  "Education - new": "EDU26"
+  "Protection - new": "PRO26"
+  "WASH - new": "ASH26"

@@ -25,6 +25,8 @@ if "Severity" not in df.columns:
             
     if sev_col in sev_df.columns and pcode_col in df.columns and pcode_col in sev_df.columns:
         # Merge only the severity column
+        if sev_col in df.columns:
+            df = df.drop(columns=[sev_col])
         df = df.merge(sev_df[[pcode_col, sev_col]], on=pcode_col, how="left")
         df["Severity"] = df[sev_col]
 

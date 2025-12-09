@@ -1,6 +1,6 @@
 name: Colombia
 file_path: Worksheet_Colombia_JIAF_PiNySeveridad_2026_Final_V4.xlsx
-cod_uri: COD_COL_Admin2.geojson
+cod_uri: precomputed/COL/col_admin2_simplified.geojson
 geo:
   pcode_col: "Admin 2 Código P"
   geojson_key: "properties.p_code"
@@ -20,7 +20,7 @@ sectors:
   - WASH
   - Child Protection
   - GBV
-  - Acción contra las minas
+  - Mine Action
   - HLP
 column_mapping:
   Final PiN: "PiN final"

@@ -38,7 +38,13 @@ def process_pin_data(config, df):
     
     # Handle mapping: Internal -> Excel
     mapping = config.get('column_mapping', {})
-    inv_map = {v: k for k, v in mapping.items()}
+    inv_map = {}
+    for k, v in mapping.items():
+        if isinstance(v, list):
+            for val in v:
+                inv_map[val] = k
+        else:
+            inv_map[v] = k
     df = df.rename(columns=inv_map)
     
     sectors = config.get('sectors', [])
@@ -48,7 +54,9 @@ def process_pin_data(config, df):
     for col in numeric_cols:
         if col in df.columns:
              # Replace excel-style hyphens with 0
-             df[col] = df[col].replace({'-': 0})
+             df[col] = df[col].astype(str).replace({'-': '0'})
+             # Clean specific artifacts like "NoPIN26 "
+             df[col] = df[col].str.replace(r'NoPIN26\s*', '', regex=True)
              df[col] = pd.to_numeric(df[col], errors='coerce')
 
     # Check for Population Group aggregation
@@ -75,6 +83,11 @@ def process_pin_data(config, df):
     if "Population" in df.columns:
         df["% PiN"] = df["Final PiN"] / df["Population"]
     
+    # Ensure remaining object columns are strings to avoid Parquet inference issues
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            df[col] = df[col].astype(str)
+
     return df
 
 def process_hist_data(config, df):
@@ -87,7 +100,13 @@ def process_hist_data(config, df):
     df = df.iloc[start_row:].reset_index(drop=True)
     
     mapping = config.get('column_mapping', {})
-    inv_map = {v: k for k, v in mapping.items()}
+    inv_map = {}
+    for k, v in mapping.items():
+        if isinstance(v, list):
+            for val in v:
+                inv_map[val] = k
+        else:
+            inv_map[v] = k
     df = df.rename(columns=inv_map)
     
     sectors = config.get('sectors', [])
@@ -97,11 +116,13 @@ def process_hist_data(config, df):
     numeric_cols = []
     for old, new in zip(sectors_old, sectors_new):
         if old in df.columns:
-            df[old] = df[old].replace({'-': 0})
+            df[old] = df[old].astype(str).replace({'-': '0'})
+            df[old] = df[old].str.replace(r'NoPIN26\s*', '', regex=True)
             df[old] = pd.to_numeric(df[old], errors='coerce')
             numeric_cols.append(old)
         if new in df.columns:
-            df[new] = df[new].replace({'-': 0})
+            df[new] = df[new].astype(str).replace({'-': '0'})
+            df[new] = df[new].str.replace(r'NoPIN26\s*', '', regex=True)
             df[new] = pd.to_numeric(df[new], errors='coerce')
             numeric_cols.append(new)
             
@@ -129,6 +150,11 @@ def process_hist_data(config, df):
         df["Old PiN"] = df[existing_old].sum(axis=1)
         df["New PiN"] = df[existing_new].sum(axis=1)
         
+    # Ensure remaining object columns are strings to avoid Parquet inference issues
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            df[col] = df[col].astype(str)
+
     return df
 
 def process_sev_data(config, df):
@@ -141,17 +167,34 @@ def process_sev_data(config, df):
     df = df.iloc[start_row:].reset_index(drop=True)
     
     mapping = config.get('column_mapping', {})
-    inv_map = {v: k for k, v in mapping.items()}
+    inv_map = {}
+    for k, v in mapping.items():
+        if isinstance(v, list):
+            for val in v:
+                inv_map[val] = k
+        else:
+            inv_map[v] = k
     df = df.rename(columns=inv_map)
 
     sectors = config.get('sectors', [])
     for s in sectors:
         if s in df.columns:
-            df[s] = df[s].replace({'-': 0})
+            df[s] = df[s].astype(str).replace({'-': '0'})
+            df[s] = df[s].str.replace(r'NoPIN26\s*', '', regex=True)
             df[s] = pd.to_numeric(df[s], errors='coerce')
+
+    # Also clean and convert 'Final Severity' if present
+    if "Final Severity" in df.columns:
+         df["Final Severity"] = df["Final Severity"].astype(str).replace({'-': '0'})
+         df["Final Severity"] = pd.to_numeric(df["Final Severity"], errors='coerce')
             
     pcode_col = config.get('geo', {}).get('pcode_col', "Admin 2 P-Code")
     if pcode_col in df.columns:
          df = df.drop_duplicates(subset=[pcode_col])
+    
+    # Ensure remaining object columns are strings to avoid Parquet inference issues
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            df[col] = df[col].astype(str)
          
     return df
