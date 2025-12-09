@@ -6,7 +6,8 @@ import streamlit as st
 surveys = {
     "Colombia": "ajiqJ68LUrt4d4v4yRb7gw",
     "Myanmar": "awizpCCNrU6UiXxcqf4grg",
-    "Sudan": "aX8aLeo8iuxQQazNRKAVKD"
+    "Sudan": "aX8aLeo8iuxQQazNRKAVKD",
+    "Venezuela": "aMtE6yAAM2XwFptHZYUPNB"
 }
 
 st.set_page_config(layout="wide", page_title="JIAF Severity 5 Review Dashboard", page_icon="🌍")
@@ -55,6 +56,7 @@ df = fetch_data(survey_id)
 form_df_raw = fetch_form(survey_id)
 # Keep the indexed version for standard question lookups (used in charts and view dialog)
 form_df = form_df_raw.drop_duplicates(subset="$xpath").set_index("$xpath")
+
 
 def wrap_label(text, width=80):
     words = text.split()
@@ -430,7 +432,7 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
                     comments = comments_filtered.tolist()
 
                     if comments:
-                        st.markdown(f"##### 📝 {area_label}")                        # Display comments as a list
+                        st.markdown(f"##### 📝 {area_label}")  # Display comments as a list
                         st.markdown(
                             "\n".join([f"* {comment}" for comment in comments])
                         )
