@@ -27,7 +27,15 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.title("JIAF Severity 5 Review Dashboard")
-country = st.selectbox("Select Country", options=list(surveys.keys()))
+
+col1, col2 = st.columns([3, 1], vertical_alignment="bottom")
+with col1:
+    country = st.selectbox("Select Country", options=list(surveys.keys()))
+with col2:
+    if st.button("🔄 Refresh Data"):
+        st.cache_data.clear()
+        st.rerun()
+
 survey_id = surveys[country]
 
 API_KEY = "0b93ccf6941932f0b1e5cf5bdd9ad69a8fa87cef"
