@@ -7,7 +7,8 @@ surveys = {
     "Colombia": "ajiqJ68LUrt4d4v4yRb7gw",
     "Myanmar": "awizpCCNrU6UiXxcqf4grg",
     "Sudan": "aX8aLeo8iuxQQazNRKAVKD",
-    "Venezuela": "aMtE6yAAM2XwFptHZYUPNB"
+    "Venezuela": "aMtE6yAAM2XwFptHZYUPNB",
+    "South Sudan": "afzb6qQKd6p7zziT6cTunx"
 }
 
 st.set_page_config(layout="wide", page_title="JIAF Severity 5 Review Dashboard", page_icon="🌍")
