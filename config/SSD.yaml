@@ -1,0 +1,50 @@
+name: South Sudan
+file_path: "South Sudan_Worksheet_3A_3B_PiN&Sev_Template_18NOVEMBER2025 REVIEW 1DEC.xlsx"
+cod_uri: "https://fdw.fews.net/api/feature/?country_code=SS&unit_type=admin2&format=geojson"
+geo:
+  pcode_col: "Admin 2 P-Code"
+  geojson_key: "properties.p_code"
+sheets:
+  pin: "WS - 3.1 Overall PiN"
+  history: "PiN Historical Trend"
+  severity: "WS - 3.2 Intersectoral Severity"
+params:
+  header_row: 2
+  start_row: 3
+sectors:
+  - CCCM
+  - Education
+  - Nutrition
+  - Food Security
+  - Health
+  - Overarching Protection
+  - Shelter
+  - WASH
+column_mapping:
+  Final PiN: "Final PiN"
+  Population: "Affected population projection 2026"
+  CCCM: "CCCM"
+  Education: "Education"
+  Nutrition: "Nutrition"
+  Food Security: "Food Security"
+  Health: "Health"
+  "Overarching Protection": "Overarching Protection"
+  Shelter: "Shelter"
+  WASH: "WASH"
+  # History mappings
+  "CCCM - old": "CCCM - old"
+  "Education - old": "Education - old"
+  "Nutrition - old": "Nutrition - old"
+  "Food Security - old": "Food Security - old"
+  "Health - old": "Health - old"
+  "Overarching Protection - old": "Overarching Protection - old"
+  "Shelter - old": "Shelter - old"
+  "WASH - old": "WASH - old"
+  "CCCM - new": "CCCM - new"
+  "Education - new": "Education - new"
+  "Nutrition - new": "Nutrition - new"
+  "Food Security - new": "Food Security - new"
+  "Health - new": "Health - new"
+  "Overarching Protection - new": "Overarching Protection - new"
+  "Shelter - new": "Shelter - new"
+  "WASH - new": "WASH - new"
