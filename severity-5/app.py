@@ -453,5 +453,5 @@ for i, module in enumerate(st.tabs(["Module 1", "Module 2", "Module 3", "Areas",
         with module:
             st.markdown("## All Submissions")
             for idx, row in df.iterrows():
-                if st.button(row["Name"]):
+                if st.button(row["Name"], key=row["_uuid"]):
                     view(row)
