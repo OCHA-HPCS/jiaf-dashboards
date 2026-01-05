@@ -1,0 +1,37 @@
+name: Haiti
+file_path: HTI_Worksheet_3A_3B_PiN&Sev_Compilation_20251101.xlsx
+cod_uri: precomputed/HTI/hti_admin2.geojson
+geo:
+  pcode_col: "Admin 2 P-Code"
+  geojson_key: "properties.adm2_pcode"
+sheets:
+  pin: "WS - 3.1 Overall PiN"
+  history: "PiN Historical Trend"
+  severity: "WS - 3.2 Intersectoral Severity"
+params:
+  header_row: 2
+  start_row: 3
+sectors:
+  - CCCM
+  - Education
+  - Nutrition
+  - Food Security
+  - Health
+  - Protection
+  - Shelter
+  - WASH
+  - CP
+  - GBV
+  - Migrants
+column_mapping:
+  Final PiN: "Final PiN"
+  Population: "Population"
+  Final Severity: "Final Severity"
+  
+  # Severity mappings
+  CP: "Child Protection (CP)"
+  GBV: "Gender-based Violence (GBV)"
+  
+  # History mappings
+  "Protection - old": "Overarching Protection - old"
+  "Protection - new": "Overarching Protection - new"
