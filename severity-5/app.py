@@ -8,7 +8,8 @@ surveys = {
     "Myanmar": "awizpCCNrU6UiXxcqf4grg",
     "Sudan": "aX8aLeo8iuxQQazNRKAVKD",
     "Venezuela": "aMtE6yAAM2XwFptHZYUPNB",
-    "South Sudan": "afzb6qQKd6p7zziT6cTunx"
+    "South Sudan": "afzb6qQKd6p7zziT6cTunx",
+    "Haiti": "aKpBUdZZqLmj4wAxBkYgXx"
 }
 
 st.set_page_config(layout="wide", page_title="JIAF Severity 5 Review Dashboard", page_icon="🌍")
@@ -61,6 +62,11 @@ def fetch_form(survey_id: str) -> pd.DataFrame:
 
 
 df = fetch_data(survey_id)
+
+if df.empty:
+    st.warning(f"No submissions found for {country}")
+    st.stop()
+
 # Store the raw form data (non-indexed) for order-based lookup
 form_df_raw = fetch_form(survey_id)
 # Keep the indexed version for standard question lookups (used in charts and view dialog)
