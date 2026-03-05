@@ -1,6 +1,7 @@
 import pandas as pd
 import yaml
 import os
+import numpy as np
 
 def load_config(iso):
     """Loads configuration for a given ISO without Streamlit dependencies."""
@@ -102,7 +103,11 @@ def process_pin_data(config, df):
 
     df["Final PiN"] = pd.to_numeric(df["Final PiN"], errors='coerce', downcast="integer")
     if "Population" in df.columns:
-        df["% PiN"] = df["Final PiN"] / df["Population"]
+        # Avoid division by zero
+        pop = df["Population"].replace({0: np.nan})
+        df["% PiN"] = df["Final PiN"] / pop
+        # Cap at 100%
+        df["% PiN"] = df["% PiN"].clip(upper=1.0)
     
     # Ensure remaining object columns are strings to avoid Parquet inference issues
     for col in df.columns:
